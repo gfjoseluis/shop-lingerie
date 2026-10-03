@@ -90,18 +90,18 @@ export interface Paginated<T> {
 
 export interface ProductFilters {
   q?: string;
-  categorySlug?: string;
-  size?: string;
-  color?: string;
+  categorySlugs?: string[];
+  sizes?: string[];
+  colors?: string[];
   minPrice?: number;
   maxPrice?: number;
   page?: number;
   limit?: number;
   sort?: "newest" | "price_asc" | "price_desc";
   onlyAvailable?: boolean;
-  cupType?: string;
-  cutType?: string;
-  material?: string;
+  cupTypes?: string[];
+  cutTypes?: string[];
+  materials?: string[];
 }
 
 // Grupos de categorías (taxonomía tienda)

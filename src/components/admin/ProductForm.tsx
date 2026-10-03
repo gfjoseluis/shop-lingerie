@@ -150,16 +150,26 @@ export function ProductForm({ categories, initial }: { categories: Category[]; i
     <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[1fr_380px]">
       <div className="space-y-3 border border-figue/15 bg-white p-5">
         <h2 className="font-display text-xl">Datos</h2>
-        <input required value={name} onChange={(e) => { setName(e.target.value); if (!slugTouched) setSlug(slugify(e.target.value)); }} placeholder="Nombre" className={input} />
-        <input required value={slug} onChange={(e) => { setSlug(slugify(e.target.value)); setSlugTouched(true); }} placeholder="slug-del-producto" className={input} />
-        <textarea required value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Descripción" rows={4} className={input} />
-        <div className="grid grid-cols-2 gap-3">
-          <label className="text-sm">Precio Bs<input required type="number" min={0} step="0.01" value={basePrice} onChange={(e) => setBasePrice(e.target.value)} className={input} /></label>
-          <label className="text-sm">Oferta Bs (opcional)<input type="number" min={0} step="0.01" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} placeholder="—" className={input} /></label>
+        <div>
+          <label htmlFor="pf-nombre" className="text-sm text-nuit/70">Nombre del producto</label>
+          <input id="pf-nombre" required value={name} onChange={(e) => { setName(e.target.value); if (!slugTouched) setSlug(slugify(e.target.value)); }} placeholder="Ej. Sostén Push-Up Negro" className={`${input} mt-1`} />
+        </div>
+        <div>
+          <label htmlFor="pf-slug" className="text-sm text-nuit/70">Slug (URL)</label>
+          <input id="pf-slug" required value={slug} onChange={(e) => { setSlug(slugify(e.target.value)); setSlugTouched(true); }} placeholder="sosten-push-up-negro" className={`${input} mt-1`} />
+          <p className="mt-1 text-xs font-light text-nuit/55">Se genera solo desde el nombre; tócalo solo si quieres personalizarlo.</p>
+        </div>
+        <div>
+          <label htmlFor="pf-desc" className="text-sm text-nuit/70">Descripción</label>
+          <textarea id="pf-desc" required value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Tela, calce, ocasión de uso..." rows={4} className={`${input} mt-1`} />
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <label className="text-sm">Categoría
-            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className={input}>
+          <label className="text-sm" htmlFor="pf-precio">Precio Bs<input id="pf-precio" required type="number" min={0} step="0.01" value={basePrice} onChange={(e) => setBasePrice(e.target.value)} className={`${input} mt-1`} /></label>
+          <label className="text-sm" htmlFor="pf-oferta">Oferta Bs (opcional)<input id="pf-oferta" type="number" min={0} step="0.01" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} placeholder="—" className={`${input} mt-1`} /></label>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="text-sm" htmlFor="pf-cat">Categoría
+            <select id="pf-cat" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className={`${input} mt-1`}>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </label>
@@ -231,6 +241,9 @@ export function ProductForm({ categories, initial }: { categories: Category[]; i
           <p className="text-xs text-nuit/55">Si el producto ya tiene pedidos, no se pueden reemplazar variantes: edita el stock directo en la tabla de abajo del editor.</p>
         )}
         <div className="space-y-2">
+          <div className="grid grid-cols-[70px_1fr_1fr_80px_auto] gap-2 text-xs text-nuit/55" aria-hidden>
+            <span>Talla</span><span>Color</span><span>SKU</span><span>Stock</span><span></span>
+          </div>
           {variants.map((v, i) => (
             <div key={i} className="grid grid-cols-[70px_1fr_1fr_80px_auto] items-center gap-2">
               <input value={v.size} onChange={(e) => setVariants((p) => p.map((x, j) => (j === i ? { ...x, size: e.target.value } : x)))} placeholder="Talla" className={input} />

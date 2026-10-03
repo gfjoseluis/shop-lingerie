@@ -2,19 +2,29 @@ import { z } from "zod";
 
 export const productQuerySchema = z.object({
   q: z.string().max(100).optional(),
-  categoria: z.string().max(60).optional(),
-  talla: z.string().max(10).optional(),
-  color: z.string().max(30).optional(),
+  categoria: multiString(60),
+  talla: multiString(10),
+  color: multiString(30),
   minPrice: z.coerce.number().min(0).optional(),
   maxPrice: z.coerce.number().min(0).optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(48).default(12),
   orden: z.enum(["newest", "price_asc", "price_desc"]).default("newest"),
   soloDisponible: z.coerce.boolean().optional(),
-  copa: z.string().max(30).optional(),
-  corte: z.string().max(30).optional(),
-  tela: z.string().max(30).optional(),
+  copa: multiString(30),
+  corte: multiString(30),
+  tela: multiString(30),
 });
+
+// Acepta ?x=a&x=b o ?x=a y normaliza a string[]
+function multiString(maxLen: number) {
+  return z.preprocess((v) => {
+    if (Array.isArray(v))
+      return v.filter((x): x is string => typeof x === "string").map((s) => s.slice(0, maxLen)).slice(0, 20);
+    if (typeof v === "string" && v) return [v.slice(0, maxLen)];
+    return [];
+  }, z.array(z.string()).default([]));
+}
 
 export const orderItemSchema = z.object({
   variantId: z.string().min(1),

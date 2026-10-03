@@ -25,7 +25,7 @@ export function ProductCard({ p, large = false }: { p: Product; large?: boolean 
           </p>
         </div>
         <div className="text-right">
-          <p className="font-medium text-figue">{formatPrice(price)}</p>
+          <p className="font-medium text-nuit">{formatPrice(price)}</p>
           {p.salePrice ? <p className="text-[0.8rem] text-nuit/45 line-through">{formatPrice(p.basePrice)}</p> : null}
         </div>
       </div>

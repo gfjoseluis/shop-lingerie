@@ -15,9 +15,11 @@ export class MockProductRepository implements IProductRepository {
     const limit = f.limit ?? 12;
     let items = [...MOCK_PRODUCTS];
 
-    if (f.categorySlug) {
-      const cat = MOCK_CATEGORIES.find((c) => c.slug === f.categorySlug);
-      items = cat ? items.filter((p) => p.categoryId === cat.id) : [];
+    if (f.categorySlugs && f.categorySlugs.length > 0) {
+      const ids = new Set(
+        MOCK_CATEGORIES.filter((c) => f.categorySlugs!.includes(c.slug)).map((c) => c.id)
+      );
+      items = items.filter((p) => ids.has(p.categoryId));
     }
     if (f.q) {
       const q = f.q.toLowerCase();
@@ -28,17 +30,19 @@ export class MockProductRepository implements IProductRepository {
           p.variants.some((v) => v.color.toLowerCase().includes(q))
       );
     }
-    if (f.size) items = items.filter((p) => p.variants.some((v) => v.size === f.size && v.stock > 0));
-    if (f.color) {
-      const c = f.color.toLowerCase();
-      items = items.filter((p) => p.variants.some((v) => v.color.toLowerCase().includes(c)));
+    if (f.sizes && f.sizes.length > 0)
+      items = items.filter((p) => p.variants.some((v) => f.sizes!.includes(v.size) && v.stock > 0));
+    if (f.colors && f.colors.length > 0) {
+      const wanted = f.colors.map((c) => c.toLowerCase());
+      items = items.filter((p) => p.variants.some((v) => wanted.some((c) => v.color.toLowerCase().includes(c))));
     }
     if (f.minPrice !== undefined) items = items.filter((p) => effectivePrice(p.basePrice, p.salePrice) >= f.minPrice!);
     if (f.maxPrice !== undefined) items = items.filter((p) => effectivePrice(p.basePrice, p.salePrice) <= f.maxPrice!);
     if (f.onlyAvailable) items = items.filter((p) => p.variants.some((v) => v.stock > 0));
-    if (f.cupType) items = items.filter((p) => p.cupType === f.cupType);
-    if (f.cutType) items = items.filter((p) => p.cutType === f.cutType);
-    if (f.material) items = items.filter((p) => p.material === f.material);
+    if (f.cupTypes && f.cupTypes.length > 0) items = items.filter((p) => p.cupType && f.cupTypes!.includes(p.cupType));
+    if (f.cutTypes && f.cutTypes.length > 0) items = items.filter((p) => p.cutType && f.cutTypes!.includes(p.cutType));
+    if (f.materials && f.materials.length > 0)
+      items = items.filter((p) => p.material && f.materials!.includes(p.material));
 
     if (f.sort === "price_asc") items.sort((a, b) => effectivePrice(a.basePrice, a.salePrice) - effectivePrice(b.basePrice, b.salePrice));
     else if (f.sort === "price_desc") items.sort((a, b) => effectivePrice(b.basePrice, b.salePrice) - effectivePrice(a.basePrice, a.salePrice));

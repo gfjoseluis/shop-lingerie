@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { getAdminRepository } from "@/repositories/factory";
 import { getServiceClient } from "@/lib/supabase/admin";
 import { createServerSupabase } from "@/lib/supabase/server";
@@ -139,4 +140,38 @@ export async function deleteCategoryAction(id: string): Promise<Result> {
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Error" };
   }
+}
+
+const settingsKeySchema = z.enum([
+  "store_name",
+  "whatsapp_number",
+  "instagram_url",
+  "tiktok_url",
+  "facebook_url",
+]);
+
+export async function saveSettingsAction(input: Record<string, string>): Promise<Result> {
+  await requireAdmin();
+  const clean: Record<string, string> = {};
+  for (const key of settingsKeySchema.options) {
+    clean[key] = (input[key] ?? "").trim();
+  }
+  if (clean.store_name.length < 2) return { ok: false, error: "El nombre de la tienda es muy corto" };
+  const digits = clean.whatsapp_number.replace(/\D/g, "");
+  if (!/^\d{8,15}$/.test(digits)) return { ok: false, error: "WhatsApp inválido: solo dígitos con código país (ej. 59170000000)" };
+  clean.whatsapp_number = digits;
+  for (const k of ["instagram_url", "tiktok_url", "facebook_url"] as const) {
+    if (clean[k] && !/^https?:\/\/.+\..+/.test(clean[k])) return { ok: false, error: `URL inválida en ${k}` };
+  }
+  try {
+    const db = getServiceClient();
+    const { error } = await db
+      .from("site_settings")
+      .upsert(Object.entries(clean).map(([key, value]) => ({ key, value })), { onConflict: "key" });
+    if (error) throw new Error(error.message);
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "No se pudo guardar (¿corriste migrate-03.sql?)" };
+  }
+  revalidatePath("/", "layout");
+  return { ok: true };
 }

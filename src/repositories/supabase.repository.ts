@@ -150,20 +150,19 @@ export class SupabaseProductRepository implements IProductRepository {
     const page = f.page ?? 1;
     const limit = f.limit ?? 12;
 
-    let categoryId: string | null = null;
-    if (f.categorySlug) {
-      const { data: cat, error: catErr } = await db
+    let categoryIds: string[] | null = null;
+    if (f.categorySlugs && f.categorySlugs.length > 0) {
+      const { data: cats, error: catErr } = await db
         .from("categories")
-        .select("id")
-        .eq("slug", f.categorySlug)
-        .maybeSingle();
+        .select("id,slug")
+        .in("slug", f.categorySlugs);
       if (catErr) throw new Error(`Supabase categories: ${catErr.message}`);
-      if (!cat) return { data: [], page, limit, total: 0, totalPages: 1 };
-      categoryId = cat.id as string;
+      categoryIds = ((cats ?? []) as { id: string }[]).map((c) => c.id);
+      if (categoryIds.length === 0) return { data: [], page, limit, total: 0, totalPages: 1 };
     }
 
     let query = db.from("products").select(await productSelect(db)).eq("is_active", true);
-    if (categoryId) query = query.eq("category_id", categoryId);
+    if (categoryIds) query = query.in("category_id", categoryIds);
     if (f.q) {
       const q = f.q.replace(/[%_]/g, "");
       query = query.or(`name.ilike.%${q}%,description.ilike.%${q}%`);
@@ -177,15 +176,17 @@ export class SupabaseProductRepository implements IProductRepository {
 
     if (f.minPrice !== undefined) items = items.filter((p) => effectivePrice(p.basePrice, p.salePrice) >= f.minPrice!);
     if (f.maxPrice !== undefined) items = items.filter((p) => effectivePrice(p.basePrice, p.salePrice) <= f.maxPrice!);
-    if (f.size) items = items.filter((p) => p.variants.some((v) => v.size === f.size && v.stock > 0));
-    if (f.color) {
-      const c = f.color.toLowerCase();
-      items = items.filter((p) => p.variants.some((v) => v.color.toLowerCase().includes(c)));
+    if (f.sizes && f.sizes.length > 0)
+      items = items.filter((p) => p.variants.some((v) => f.sizes!.includes(v.size) && v.stock > 0));
+    if (f.colors && f.colors.length > 0) {
+      const wanted = f.colors.map((c) => c.toLowerCase());
+      items = items.filter((p) => p.variants.some((v) => wanted.some((c) => v.color.toLowerCase().includes(c))));
     }
     if (f.onlyAvailable) items = items.filter((p) => p.variants.some((v) => v.stock > 0));
-    if (f.cupType) items = items.filter((p) => p.cupType === f.cupType);
-    if (f.cutType) items = items.filter((p) => p.cutType === f.cutType);
-    if (f.material) items = items.filter((p) => p.material === f.material);
+    if (f.cupTypes && f.cupTypes.length > 0) items = items.filter((p) => p.cupType && f.cupTypes!.includes(p.cupType));
+    if (f.cutTypes && f.cutTypes.length > 0) items = items.filter((p) => p.cutType && f.cutTypes!.includes(p.cutType));
+    if (f.materials && f.materials.length > 0)
+      items = items.filter((p) => p.material && f.materials!.includes(p.material));
 
     if (f.sort === "price_asc")
       items.sort((a, b) => effectivePrice(a.basePrice, a.salePrice) - effectivePrice(b.basePrice, b.salePrice));

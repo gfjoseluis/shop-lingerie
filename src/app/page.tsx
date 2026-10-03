@@ -10,7 +10,7 @@ export default async function Home() {
     <main className="mx-auto max-w-6xl px-4">
       <section className="grid gap-10 pt-10 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
         <div>
-          <p className="text-sm font-light text-figue">Catálogo privado · Solo WhatsApp · Contraentrega</p>
+          <p className="text-sm font-light text-nuit/55">Catálogo · Pedidos por WhatsApp · Contraentrega</p>
           <h1 className="font-display mt-4 max-w-[14ch] text-[2.8rem] leading-[0.98] sm:text-[4.4rem]">
             Íntima, suave y a tu medida.
           </h1>
@@ -18,7 +18,7 @@ export default async function Home() {
             Eliges en calma, preguntas tu talla por WhatsApp y recibes en Santa Cruz con Yango o InDrive. Sin pagos en línea, sin apuros.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Link href="/catalogo" className="bg-figue px-7 py-3 text-[0.95rem] text-white transition hover:bg-figue-deep">
+            <Link href="/catalogo" className="bg-nuit px-7 py-3 text-[0.95rem] text-ivoire">
               Explorar la colección
             </Link>
             <span className="text-sm font-light text-nuit/60">Guía de tallas incluida en cada pieza</span>
@@ -46,12 +46,12 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mt-14 border-y border-figue/15 py-5">
-        <div className="flex gap-8 overflow-x-auto">
+      <section className="mt-14 border-y border-figue/15 py-8">
+        <div className="grid grid-cols-2 gap-px bg-nuit/10 sm:grid-cols-4">
           {cats.map((c) => (
-            <Link key={c.id} href={`/catalogo?categoria=${c.slug}`} className="group flex shrink-0 items-baseline gap-2">
-              <span className="font-display text-xl group-hover:text-figue">{c.name}</span>
-              <span className="text-xs font-light text-nuit/50">{c.description}</span>
+            <Link key={c.id} href={`/catalogo?categoria=${c.slug}`} className="group bg-ivoire p-5 transition hover:bg-seda-soft">
+              <span className="font-display block text-xl group-hover:text-figue">{c.name}</span>
+              <span className="mt-1 block text-xs font-light text-nuit/50">{c.description}</span>
             </Link>
           ))}
         </div>

@@ -27,6 +27,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link href="/admin/pedidos" className="underline underline-offset-4">
               Pedidos
             </Link>
+            <Link href="/admin/configuracion" className="underline underline-offset-4">
+              Configuración
+            </Link>
             <Link href="/" className="text-ivoire/60">
               Ver tienda
             </Link>

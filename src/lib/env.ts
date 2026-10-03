@@ -11,6 +11,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_WHATSAPP_NUMBER: z.string().default("59170000000"),
   NEXT_PUBLIC_STORE_NAME: z.string().default("Santa Cruz Lencería"),
   NEXT_PUBLIC_CURRENCY: z.string().default("Bs"),
+  NEXT_PUBLIC_INSTAGRAM_URL: z.string().url().optional().or(z.literal("")),
+  NEXT_PUBLIC_TIKTOK_URL: z.string().url().optional().or(z.literal("")),
+  NEXT_PUBLIC_FACEBOOK_URL: z.string().url().optional().or(z.literal("")),
 });
 
 const raw = envSchema.parse({
@@ -22,6 +25,9 @@ const raw = envSchema.parse({
   NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "59170000000",
   NEXT_PUBLIC_STORE_NAME: process.env.NEXT_PUBLIC_STORE_NAME ?? "Santa Cruz Lencería",
   NEXT_PUBLIC_CURRENCY: process.env.NEXT_PUBLIC_CURRENCY ?? "Bs",
+  NEXT_PUBLIC_INSTAGRAM_URL: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "",
+  NEXT_PUBLIC_TIKTOK_URL: process.env.NEXT_PUBLIC_TIKTOK_URL ?? "",
+  NEXT_PUBLIC_FACEBOOK_URL: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "",
 });
 
 // Key pública efectiva: prefiere la nueva publishable, fallback a anon legacy.

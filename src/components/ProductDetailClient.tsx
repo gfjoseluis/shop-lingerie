@@ -47,9 +47,9 @@ export function ProductDetailClient({ product }: { product: Product }) {
         </div>
       </div>
       <div>
-        <p className="text-sm font-light text-figue">{product.category?.name}</p>
+        <p className="text-sm font-light text-laiton">{product.category?.name}</p>
         <h1 className="font-display mt-1 text-[2rem] leading-tight">{product.name}</h1>
-        <p className="mt-2 font-display text-2xl text-figue">{formatPrice(price)}</p>
+        <p className="mt-2 font-display text-2xl text-nuit">{formatPrice(price)}</p>
         {product.salePrice ? <p className="text-sm text-nuit/45 line-through">{formatPrice(product.basePrice)}</p> : null}
         <p className="mt-3 max-w-[52ch] text-[0.95rem] font-light leading-7 text-nuit/80">{product.description}</p>
 
@@ -97,7 +97,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 type="button"
                 onClick={() => setColor(c)}
                 aria-pressed={c === color}
-                className={`touch-manipulation min-h-[44px] cursor-pointer border px-4 py-2 text-sm select-none ${c === color ? "border-figue bg-figue text-white" : "border-nuit/20"}`}
+                className={`touch-manipulation min-h-[44px] cursor-pointer border px-4 py-2 text-sm select-none ${c === color ? "border-nuit bg-nuit text-ivoire" : "border-nuit/20"}`}
               >
                 {c}
               </button>
@@ -113,7 +113,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 type="button"
                 onClick={() => setSize(s)}
                 aria-pressed={s === size}
-                className={`touch-manipulation min-h-[44px] cursor-pointer border px-4 py-2 text-sm select-none ${s === size ? "border-figue bg-figue text-white" : "border-nuit/20"}`}
+                className={`touch-manipulation min-h-[44px] cursor-pointer border px-4 py-2 text-sm select-none ${s === size ? "border-nuit bg-nuit text-ivoire" : "border-nuit/20"}`}
               >
                 {s}
               </button>

@@ -10,17 +10,17 @@ export async function GET(req: Request) {
   const svc = new ProductService();
   const result = await svc.list({
     q: q.q,
-    categorySlug: q.categoria,
-    size: q.talla,
-    color: q.color,
+    categorySlugs: q.categoria,
+    sizes: q.talla,
+    colors: q.color,
     minPrice: q.minPrice,
     maxPrice: q.maxPrice,
     page: q.page,
     limit: q.limit,
     sort: q.orden,
-    cupType: q.copa,
-    cutType: q.corte,
-    material: q.tela,
+    cupTypes: q.copa,
+    cutTypes: q.corte,
+    materials: q.tela,
   });
   return NextResponse.json(result);
 }

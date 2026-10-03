@@ -4,13 +4,29 @@ import { useRouter } from "next/navigation";
 import type { Category } from "@/types/domain";
 import { deleteCategoryAction, saveCategoryAction } from "@/app/admin/(panel)/actions";
 
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
 export function CategoryManager({ initial }: { initial: Category[] }) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+  const [slugTouched, setSlugTouched] = useState(false);
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
+
+  function onName(v: string) {
+    setName(v);
+    if (!slugTouched) setSlug(slugify(v));
+  }
 
   async function create(e: React.FormEvent) {
     e.preventDefault();
@@ -21,6 +37,7 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
       else {
         setName("");
         setSlug("");
+        setSlugTouched(false);
         setDescription("");
         router.refresh();
       }
@@ -47,9 +64,19 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
       </div>
       <form onSubmit={create} className="h-fit space-y-3 border border-figue/15 bg-white p-5">
         <h2 className="font-display text-xl">Nueva categoría</h2>
-        <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre (ej. Cacheteros)" className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue" />
-        <input required value={slug} onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-"))} placeholder="slug (ej. cacheteros)" className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue" />
-        <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Descripción (opcional)" className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue" />
+        <div>
+          <label htmlFor="cat-nombre" className="text-sm text-nuit/70">Nombre</label>
+          <input id="cat-nombre" required value={name} onChange={(e) => onName(e.target.value)} placeholder="Ej. Cacheteros" className="mt-1 w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue" />
+        </div>
+        <div>
+          <label htmlFor="cat-slug" className="text-sm text-nuit/70">Slug (URL)</label>
+          <input id="cat-slug" required value={slug} onChange={(e) => { setSlugTouched(true); setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-")); }} placeholder="Ej. cacheteros" className="mt-1 w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue" />
+          <p className="mt-1 text-xs font-light text-nuit/55">Se genera solo desde el nombre; tócalo solo si quieres personalizarlo.</p>
+        </div>
+        <div>
+          <label htmlFor="cat-desc" className="text-sm text-nuit/70">Descripción <span className="text-nuit/50">(opcional)</span></label>
+          <input id="cat-desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Ej. Cobertura moderada tipo short" className="mt-1 w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue" />
+        </div>
         {error ? <p className="text-sm text-figue">{error}</p> : null}
         <button disabled={pending} className="w-full bg-figue py-2.5 text-white disabled:opacity-50">
           Crear

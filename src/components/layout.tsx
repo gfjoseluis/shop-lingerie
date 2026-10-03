@@ -2,16 +2,15 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
-import { env } from "@/lib/env";
 
-export function Header() {
+export function Header({ storeName }: { storeName: string }) {
   const { count } = useCart();
   const [q, setQ] = useState("");
   return (
     <header className="sticky top-0 z-40 border-b border-figue/15 bg-ivoire/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-baseline gap-6 px-4 py-4">
         <Link href="/" className="font-display text-[1.4rem] leading-none">
-          {env.NEXT_PUBLIC_STORE_NAME}
+          {storeName}
           <span className="mt-1 block font-body text-[0.7rem] font-light tracking-wide text-nuit/60">
             Santa Cruz de la Sierra
           </span>
@@ -24,7 +23,7 @@ export function Header() {
             placeholder="Encaje negro en M, body seda…"
             className="w-full border-b border-nuit/25 bg-transparent py-2 text-[0.95rem] outline-none placeholder:text-nuit/40 focus:border-figue"
           />
-          <button className="border border-figue px-4 py-2 text-sm text-figue transition hover:bg-figue hover:text-white">
+          <button className="border border-nuit px-4 py-2 text-sm text-nuit transition hover:bg-nuit hover:text-ivoire">
             Buscar
           </button>
         </form>
@@ -44,41 +43,74 @@ export function Header() {
   );
 }
 
-export function Footer() {
+export function Footer({
+  storeName,
+  categories,
+  socials,
+}: {
+  storeName: string;
+  categories: { slug: string; name: string }[];
+  socials: { instagramUrl: string; tiktokUrl: string; facebookUrl: string; whatsappNumber: string };
+}) {
+  const year = new Date().getFullYear();
+  const socialLinks = [
+    socials.instagramUrl ? { label: "Instagram", href: socials.instagramUrl } : null,
+    socials.tiktokUrl ? { label: "TikTok", href: socials.tiktokUrl } : null,
+    socials.facebookUrl ? { label: "Facebook", href: socials.facebookUrl } : null,
+  ].filter((s): s is { label: string; href: string } => s !== null);
+
   return (
-    <footer className="mt-20 bg-nuit text-ivoire">
+    <footer className="mt-20 border-t border-nuit/15">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3">
         <div>
-          <p className="font-display text-2xl">{env.NEXT_PUBLIC_STORE_NAME}</p>
-          <p className="mt-2 max-w-[32ch] text-sm font-light leading-6 text-ivoire/70">
+          <p className="font-display text-2xl">{storeName}</p>
+          <p className="mt-2 max-w-[32ch] text-sm font-light leading-6 text-nuit/65">
             Compra discreta por WhatsApp. Eliges, coordinamos Yango o InDrive y pagas al recibir.
           </p>
+          <Link
+            href={`https://wa.me/${socials.whatsappNumber}?text=${encodeURIComponent("Hola, quiero asesoría de tallas")}`}
+            target="_blank"
+            className="mt-3 inline-block bg-nuit px-5 py-2.5 text-sm text-ivoire"
+          >
+            Escríbenos por WhatsApp
+          </Link>
         </div>
         <div className="text-sm">
-          <p className="text-ivoire/50">Entrega</p>
-          <p className="mt-2 leading-6">Santa Cruz de la Sierra<br />Costo de envío a coordinar<br />Pago contraentrega</p>
-        </div>
-        <div className="text-sm">
-          <p className="text-ivoire/50">Tienda</p>
+          <p className="text-nuit/50">Tienda</p>
           <div className="mt-2 flex flex-col gap-1">
-            <Link href="/catalogo" className="w-fit underline underline-offset-4">Ver todo</Link>
-            {/* <Link href="/api-docs" className="w-fit underline underline-offset-4">API v1 para app móvil</Link> */}
+            <Link href="/catalogo" className="w-fit underline underline-offset-4">
+              Ver todo el catálogo
+            </Link>
+            {categories.slice(0, 5).map((c) => (
+              <Link key={c.slug} href={`/catalogo?categoria=${c.slug}`} className="w-fit underline underline-offset-4">
+                {c.name}
+              </Link>
+            ))}
           </div>
         </div>
+        <div className="text-sm">
+          <p className="text-nuit/50">Ayuda y redes</p>
+          <p className="mt-2 leading-6">
+            Santa Cruz de la Sierra
+            <br />
+            Envío a coordinar · Pago contraentrega
+          </p>
+          {socialLinks.length > 0 ? (
+            <div className="mt-3 flex flex-col gap-1">
+              {socialLinks.map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener" className="w-fit underline underline-offset-4">
+                  {s.label}
+                </a>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </div>
+      <div className="border-t border-nuit/10">
+        <p className="mx-auto max-w-6xl px-4 py-4 text-xs font-light text-nuit/50">
+          © {year} {storeName} · Santa Cruz de la Sierra, Bolivia · Precios en Bs
+        </p>
       </div>
     </footer>
-  );
-}
-
-export function WhatsAppFloat() {
-  return (
-    <a
-      href={`https://wa.me/${env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola, quiero asesoría de tallas")}`}
-      target="_blank"
-      className="fixed bottom-5 right-5 z-40 bg-figue px-5 py-3 text-sm text-white"
-      aria-label="WhatsApp"
-    >
-      Asesoría por WhatsApp
-    </a>
   );
 }

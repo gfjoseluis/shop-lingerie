@@ -29,8 +29,9 @@ npm run build        # verificar antes de subir a Vercel
 
 1. Crear proyecto free en supabase.com (región São Paulo).
 2. SQL Editor → correr `supabase/schema.sql` (tablas + RLS lectura pública).
-   Luego `supabase/migrate-02.sql` (atributos de lencería + 8 categorías).
-   Tras correrla, reinicia `npm run dev` (el repo cachea el esquema por proceso).
+   Luego `supabase/migrate-02.sql` (atributos de lencería + 8 categorías)
+   y `supabase/migrate-03.sql` (tabla `site_settings` editable).
+   Tras correrlas, reinicia `npm run dev` (el repo cachea el esquema por proceso).
 3. El bucket público `product-images` y los datos de ejemplo se crean con:
    `node --env-file=.env.local scripts/seed.mjs` (8 categorías + 8 productos
    con copa/corte/tela/broches; limpia pedidos de prueba y datos viejos).
@@ -51,9 +52,12 @@ ADMIN_EMAIL=... ADMIN_PASSWORD=... node --env-file=.env.local scripts/create-adm
 ```
 
 - **Panel**: productos, pedidos pendientes, stock bajo (≤3), últimos pedidos.
-- **Productos**: nuevo/editar (slug y SKU auto), precio/oferta, destacados,
-  variantes talla/color/stock, fotos por subida (JPG/PNG/WebP ≤5MB) o URL,
-  ocultar/publicar. Con pedidos existentes el stock se edita por variante.
+- **Productos**: nuevo/editar (slug y SKU auto, todo etiquetado), precio/oferta,
+  categoría, material, copa/corte/broches según tipo, variantes con tallas
+  rápidas, fotos por subida (JPG/PNG/WebP ≤5MB) o URL, ocultar/publicar.
+  Con pedidos existentes el stock se edita por variante.
+- **Categorías**: slug auto desde el nombre, renombrar y borrar (bloquea con productos).
+- **Configuración**: nombre tienda, WhatsApp y redes sin redeploy.
 - **Pedidos**: cambia estado (pendiente → confirmado → entregado; al
   **cancelar se devuelve el stock** solo) y botón WhatsApp al cliente.
 

@@ -36,7 +36,7 @@ export default function CarritoPage() {
       <div className="mt-4 rounded-2xl border bg-white p-4">
         <p className="flex justify-between font-bold"><span>Subtotal</span><span>{formatPrice(subtotal)}</span></p>
         <p className="mt-1 text-xs text-zinc-500">Envío Yango/InDrive a coordinar. Pago contraentrega.</p>
-        <Link href="/checkout" className="mt-3 block rounded-full bg-green-600 py-3 text-center text-white">Finalizar por WhatsApp</Link>
+        <Link href="/checkout" className="mt-3 block bg-nuit py-3 text-center text-ivoire">Finalizar por WhatsApp</Link>
       </div>
     </main>
   );

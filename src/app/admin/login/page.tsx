@@ -44,22 +44,32 @@ export default function LoginPage() {
       <h1 className="font-display text-3xl">Entrar al panel</h1>
       <p className="mt-1 text-sm font-light text-nuit/60">Solo la dueña de la tienda.</p>
       <form onSubmit={submit} className="mt-5 space-y-3 border border-figue/15 bg-white p-5">
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Correo admin"
-          className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue"
-        />
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Contraseña"
-          className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue"
-        />
+        <div>
+          <label htmlFor="login-email" className="text-sm text-nuit/70">Correo admin</label>
+          <input
+            id="login-email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@correo.com"
+            autoComplete="email"
+            className="mt-1 w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue"
+          />
+        </div>
+        <div>
+          <label htmlFor="login-pass" className="text-sm text-nuit/70">Contraseña</label>
+          <input
+            id="login-pass"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            autoComplete="current-password"
+            className="mt-1 w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue"
+          />
+        </div>
         {error ? <p className="text-sm text-figue">{error}</p> : null}
         {TURNSTILE_SITE_KEY ? (
           <Turnstile
