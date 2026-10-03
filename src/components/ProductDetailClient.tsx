@@ -17,13 +17,13 @@ export function ProductDetailClient({ product }: { product: Product }) {
   const price = effectivePrice(product.basePrice, product.salePrice);
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="grid gap-10 md:grid-cols-2">
       <div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={product.images[img]?.url} alt={product.name} className="aspect-[4/5] w-full rounded-2xl object-cover" />
-        <div className="mt-2 flex gap-2">
+        <img src={product.images[img]?.url} alt={product.name} className="arch w-full border border-figue/15 aspect-[4/5] object-cover" />
+        <div className="mt-3 flex gap-2">
           {product.images.map((im, i) => (
-            <button key={im.id} onClick={() => setImg(i)} className={`overflow-hidden rounded-lg border ${i === img ? "ring-2" : ""}`}>
+            <button key={im.id} onClick={() => setImg(i)} className={`overflow-hidden border ${i === img ? "border-figue" : "border-nuit/15"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={im.url} alt={im.alt ?? ""} className="h-16 w-14 object-cover" />
             </button>
@@ -31,32 +31,32 @@ export function ProductDetailClient({ product }: { product: Product }) {
         </div>
       </div>
       <div>
-        <p className="text-sm text-zinc-500">{product.category?.name}</p>
-        <h1 className="text-2xl font-bold">{product.name}</h1>
-        <p className="mt-2 text-2xl font-bold">{formatPrice(price)}</p>
-        {product.salePrice ? <p className="text-sm text-zinc-400 line-through">{formatPrice(product.basePrice)}</p> : null}
-        <p className="mt-3 text-sm leading-6">{product.description}</p>
+        <p className="text-sm font-light text-figue">{product.category?.name}</p>
+        <h1 className="font-display mt-1 text-[2rem] leading-tight">{product.name}</h1>
+        <p className="mt-2 font-display text-2xl text-figue">{formatPrice(price)}</p>
+        {product.salePrice ? <p className="text-sm text-nuit/45 line-through">{formatPrice(product.basePrice)}</p> : null}
+        <p className="mt-3 max-w-[52ch] text-[0.95rem] font-light leading-7 text-nuit/80">{product.description}</p>
 
-        <div className="mt-4">
-          <p className="text-sm font-semibold">Color: {color}</p>
-          <div className="mt-1 flex gap-2">
+        <div className="mt-5">
+          <p className="text-sm">Color: <span className="font-medium">{color}</span></p>
+          <div className="mt-2 flex gap-2">
             {colors.map((c) => (
-              <button key={c} onClick={() => setColor(c)} className={`rounded-full border px-3 py-1 text-sm ${c === color ? "bg-zinc-900 text-white" : "bg-white"}`}>{c}</button>
+              <button key={c} onClick={() => setColor(c)} className={`border px-4 py-2 text-sm ${c === color ? "border-figue bg-figue text-white" : "border-nuit/20"}`}>{c}</button>
             ))}
           </div>
         </div>
-        <div className="mt-3">
-          <p className="text-sm font-semibold">Talla: {size}</p>
-          <div className="mt-1 flex gap-2">
+        <div className="mt-4">
+          <p className="text-sm">Talla: <span className="font-medium">{size}</span></p>
+          <div className="mt-2 flex gap-2">
             {sizes.map((s) => (
-              <button key={s} onClick={() => setSize(s)} className={`rounded-full border px-3 py-1 text-sm ${s === size ? "bg-zinc-900 text-white" : "bg-white"}`}>{s}</button>
+              <button key={s} onClick={() => setSize(s)} className={`border px-4 py-2 text-sm ${s === size ? "border-figue bg-figue text-white" : "border-nuit/20"}`}>{s}</button>
             ))}
           </div>
         </div>
 
-        <div className="mt-3 rounded-xl bg-zinc-100 p-3 text-xs">
-          <p className="font-semibold">Guía de tallas (busto/cadera cm)</p>
-          <p>S: 82-86 / 90-94 · M: 87-92 / 95-100 · L: 93-98 / 101-106 · XL: 99-104 / 107-112</p>
+        <div className="mt-4 bg-seda-soft p-4 text-[0.85rem] font-light leading-6">
+          <p className="font-medium">Guía de tallas (busto/cadera cm)</p>
+          <p>S 82-86 / 90-94 · M 87-92 / 95-100 · L 93-98 / 101-106 · XL 99-104 / 107-112</p>
         </div>
 
         <p className="mt-3 text-sm">
@@ -79,11 +79,11 @@ export function ProductDetailClient({ product }: { product: Product }) {
             });
             setAdded(true);
           }}
-          className="mt-4 w-full rounded-full bg-zinc-900 py-3 text-white disabled:opacity-40"
+          className="mt-5 w-full bg-nuit py-3.5 text-ivoire disabled:opacity-40"
         >
-          Añadir al carrito
+          Guardar en la bolsa
         </button>
-        {added ? <p className="mt-2 text-sm text-green-700">Agregado. Ve al carrito para finalizar por WhatsApp.</p> : null}
+        {added ? <p className="mt-2 text-sm text-figue">Guardado. Ve a la bolsa para finalizar por WhatsApp.</p> : null}
       </div>
     </div>
   );

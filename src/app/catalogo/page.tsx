@@ -29,33 +29,37 @@ export default async function CatalogoPage({ searchParams }: Props) {
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-6">
-      <h1 className="text-xl font-bold">Catálogo {sp.q ? `“${sp.q}”` : ""}</h1>
-      <form action="/catalogo" className="mt-3 flex flex-wrap gap-2 text-sm">
-        <input name="q" defaultValue={sp.q ?? ""} placeholder="Buscar..." className="rounded-full border px-3 py-2" />
-        <select name="categoria" defaultValue={sp.categoria ?? ""} className="rounded-full border px-3 py-2">
-          <option value="">Todas</option>
-          {cats.map((c) => (
-            <option key={c.id} value={c.slug}>{c.name}</option>
-          ))}
-        </select>
-        <select name="talla" defaultValue={sp.talla ?? ""} className="rounded-full border px-3 py-2">
-          <option value="">Talla</option><option>S</option><option>M</option><option>L</option><option>XL</option>
-        </select>
-        <select name="orden" defaultValue={sp.orden ?? "newest"} className="rounded-full border px-3 py-2">
-          <option value="newest">Novedades</option><option value="price_asc">Menor precio</option><option value="price_desc">Mayor precio</option>
-        </select>
-        <button className="rounded-full bg-zinc-900 px-4 py-2 text-white">Filtrar</button>
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="font-display text-[2.2rem]">La colección {sp.q ? <span className="italic text-figue">“{sp.q}”</span> : null}</h1>
+      <p className="mt-1 text-sm font-light text-nuit/60">{res.total} piezas · página {res.page} de {res.totalPages}</p>
+      <form action="/catalogo" className="mt-5 flex flex-wrap items-end gap-3 border-y border-figue/15 py-4 text-sm">
+        <label className="flex flex-col gap-1">Buscar<input name="q" defaultValue={sp.q ?? ""} placeholder="Encaje, seda…" className="border-b border-nuit/25 bg-transparent py-1.5 outline-none focus:border-figue" /></label>
+        <label className="flex flex-col gap-1">Colección
+          <select name="categoria" defaultValue={sp.categoria ?? ""} className="border border-figue/25 bg-transparent px-3 py-2">
+            <option value="">Todas</option>
+            {cats.map((c) => <option key={c.id} value={c.slug}>{c.name}</option>)}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">Talla
+          <select name="talla" defaultValue={sp.talla ?? ""} className="border border-figue/25 bg-transparent px-3 py-2">
+            <option value="">Todas</option><option>S</option><option>M</option><option>L</option><option>XL</option>
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">Orden
+          <select name="orden" defaultValue={sp.orden ?? "newest"} className="border border-figue/25 bg-transparent px-3 py-2">
+            <option value="newest">Novedades</option><option value="price_asc">Menor precio</option><option value="price_desc">Mayor precio</option>
+          </select>
+        </label>
+        <button className="bg-nuit px-5 py-2.5 text-ivoire">Filtrar</button>
       </form>
 
-      <p className="mt-3 text-sm text-zinc-600">{res.total} productos · página {res.page}/{res.totalPages}</p>
-      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-3">
         {res.data.map((p) => <ProductCard key={p.id} p={p} />)}
       </div>
 
-      <div className="mt-6 flex justify-between text-sm">
-        {res.page > 1 ? <Link href={qs({ page: String(res.page - 1) })} className="rounded-full border px-4 py-2">← Anterior</Link> : <span />}
-        {res.page < res.totalPages ? <Link href={qs({ page: String(res.page + 1) })} className="rounded-full border px-4 py-2">Siguiente →</Link> : <span />}
+      <div className="mt-10 flex justify-between text-sm">
+        {res.page > 1 ? <Link href={qs({ page: String(res.page - 1) })} className="border border-nuit/25 px-5 py-2.5">Anterior</Link> : <span />}
+        {res.page < res.totalPages ? <Link href={qs({ page: String(res.page + 1) })} className="border border-nuit/25 px-5 py-2.5">Siguiente</Link> : <span />}
       </div>
     </main>
   );
