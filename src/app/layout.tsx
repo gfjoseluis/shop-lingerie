@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`h-full ${display.variable} ${body.variable}`}>
-      <body className="min-h-full bg-ivoire text-nuit antialiased">
+    <html lang="es" data-scroll-behavior="smooth" className={`h-full ${display.variable} ${body.variable}`}>
+      <body suppressHydrationWarning className="min-h-full bg-ivoire text-nuit antialiased">
         <CartProvider>
           <Header />
           {children}

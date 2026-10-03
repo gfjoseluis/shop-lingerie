@@ -36,6 +36,9 @@ export class MockProductRepository implements IProductRepository {
     if (f.minPrice !== undefined) items = items.filter((p) => effectivePrice(p.basePrice, p.salePrice) >= f.minPrice!);
     if (f.maxPrice !== undefined) items = items.filter((p) => effectivePrice(p.basePrice, p.salePrice) <= f.maxPrice!);
     if (f.onlyAvailable) items = items.filter((p) => p.variants.some((v) => v.stock > 0));
+    if (f.cupType) items = items.filter((p) => p.cupType === f.cupType);
+    if (f.cutType) items = items.filter((p) => p.cutType === f.cutType);
+    if (f.material) items = items.filter((p) => p.material === f.material);
 
     if (f.sort === "price_asc") items.sort((a, b) => effectivePrice(a.basePrice, a.salePrice) - effectivePrice(b.basePrice, b.salePrice));
     else if (f.sort === "price_desc") items.sort((a, b) => effectivePrice(b.basePrice, b.salePrice) - effectivePrice(a.basePrice, a.salePrice));

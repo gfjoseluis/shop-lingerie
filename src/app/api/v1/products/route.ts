@@ -18,6 +18,9 @@ export async function GET(req: Request) {
     page: q.page,
     limit: q.limit,
     sort: q.orden,
+    cupType: q.copa,
+    cutType: q.corte,
+    material: q.tela,
   });
   return NextResponse.json(result);
 }

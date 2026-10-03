@@ -5,11 +5,14 @@ function img(seed: string, w = 800, h = 1000): string {
 }
 
 export const MOCK_CATEGORIES: Category[] = [
-  { id: "c1", slug: "conjuntos", name: "Conjuntos", description: "Conjuntos de encaje y algodón" },
-  { id: "c2", slug: "bodys", name: "Bodys", description: "Bodys para toda ocasión" },
-  { id: "c3", slug: "pijamas", name: "Pijamas", description: "Pijamas cómodas" },
-  { id: "c4", slug: "panties", name: "Panties", description: "Panties pack x3" },
-  { id: "c5", slug: "ofertas", name: "Ofertas", description: "Últimas unidades" },
+  { id: "c1", slug: "bralettes", name: "Bralettes", description: "Livianos sin aro, encaje visible" },
+  { id: "c2", slug: "sostenes", name: "Sostenes", description: "Push-up, balconette y copas con soporte" },
+  { id: "c3", slug: "panties", name: "Panties", description: "Clásicas, bikini y cacheteros" },
+  { id: "c4", slug: "tangas", name: "Tangas", description: "Brasileñas e hilo, sin marcas" },
+  { id: "c5", slug: "fajas", name: "Fajas", description: "Compresión suave a firme" },
+  { id: "c6", slug: "conjuntos", name: "Conjuntos", description: "Sets coordinados" },
+  { id: "c7", slug: "ofertas", name: "Ofertas", description: "Precio especial" },
+  { id: "c8", slug: "adhesivos", name: "Adhesivos", description: "Silicona, pezoneras y cintas" },
 ];
 
 function variant(productId: string, size: string, color: string, stock: number, i: number) {
@@ -25,7 +28,7 @@ function variant(productId: string, size: string, color: string, stock: number, 
 
 export const MOCK_PRODUCTS: Product[] = Array.from({ length: 14 }).map((_, idx) => {
   const n = idx + 1;
-  const cat = MOCK_CATEGORIES[idx % 4];
+  const cat = MOCK_CATEGORIES[idx % MOCK_CATEGORIES.length];
   const id = `p${n}`;
   const basePrice = 90 + ((n * 17) % 120);
   const onSale = n % 4 === 0;

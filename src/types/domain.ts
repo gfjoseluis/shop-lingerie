@@ -40,6 +40,14 @@ export interface Product {
   isActive: boolean;
   isFeatured?: boolean;
   createdAt?: string;
+  // Atributos de lencería (opcionales según categoría)
+  cupType?: string | null; // superior: completa | media | balconette | push-up | relleno | soft
+  braStyle?: string | null; // bralettes: clasico | corset | deportivo
+  hooks?: number | null; // nro de broches 1-8 (prendas con broche)
+  cutType?: string | null; // inferior: clasica | bikini | brasilena | tanga | cachetero | ...
+  material?: string | null; // algodon | licra | encaje | saten | seda | microfibra
+  adhesiveKind?: string | null; // adhesivos: silicona | pezonera | cinta
+  presentation?: string | null; // medida, ej. "5 cm x 5 m" (cintas)
 }
 
 export interface OrderItemInput {
@@ -91,4 +99,12 @@ export interface ProductFilters {
   limit?: number;
   sort?: "newest" | "price_asc" | "price_desc";
   onlyAvailable?: boolean;
+  cupType?: string;
+  cutType?: string;
+  material?: string;
 }
+
+// Grupos de categorías (taxonomía tienda)
+export const SUPERIOR_SLUGS = ["bralettes", "sostenes"];
+export const INFERIOR_SLUGS = ["panties", "tangas", "fajas"];
+export const ADHESIVOS_SLUG = "adhesivos";

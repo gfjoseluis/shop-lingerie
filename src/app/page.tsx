@@ -32,7 +32,7 @@ export default async function Home() {
         <div className="grid grid-cols-2 gap-4">
           <div className="arch overflow-hidden border border-figue/15">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={hero?.images[0]?.url ?? ""} alt={hero?.name ?? "Pieza destacada"} className="aspect-[3/4] w-full object-cover" />
+            <img src={hero?.images[0]?.url ?? ""} alt={hero?.name ?? "Pieza destacada"} className="aspect-3/4 w-full object-cover" />
           </div>
           <div className="flex flex-col gap-4 pt-10">
             <div className="overflow-hidden border border-figue/15">

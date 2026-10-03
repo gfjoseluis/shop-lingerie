@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ProductService } from "@/services/shop.service";
 import { ProductCard } from "@/components/ProductCard";
+import { CUP_TYPES, CUT_TYPES, MATERIALS } from "@/data/guides";
 
 interface Props {
   searchParams: Promise<Record<string, string | undefined>>;
@@ -20,6 +21,9 @@ export default async function CatalogoPage({ searchParams }: Props) {
       page: Number.isNaN(page) ? 1 : page,
       limit: 12,
       sort: (sp.orden as "newest" | "price_asc" | "price_desc") ?? "newest",
+      cupType: sp.copa,
+      cutType: sp.corte,
+      material: sp.tela,
     }),
   ]);
 
@@ -42,7 +46,28 @@ export default async function CatalogoPage({ searchParams }: Props) {
         </label>
         <label className="flex flex-col gap-1">Talla
           <select name="talla" defaultValue={sp.talla ?? ""} className="border border-figue/25 bg-transparent px-3 py-2">
-            <option value="">Todas</option><option>S</option><option>M</option><option>L</option><option>XL</option>
+            <option value="">Todas</option>
+            <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            <option>34B</option><option>36B</option><option>36C</option><option>38C</option>
+            <option>Único</option>
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">Copa
+          <select name="copa" defaultValue={sp.copa ?? ""} className="border border-figue/25 bg-transparent px-3 py-2">
+            <option value="">Todas</option>
+            {CUP_TYPES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">Corte
+          <select name="corte" defaultValue={sp.corte ?? ""} className="border border-figue/25 bg-transparent px-3 py-2">
+            <option value="">Todos</option>
+            {CUT_TYPES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">Tela
+          <select name="tela" defaultValue={sp.tela ?? ""} className="border border-figue/25 bg-transparent px-3 py-2">
+            <option value="">Todas</option>
+            {MATERIALS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
           </select>
         </label>
         <label className="flex flex-col gap-1">Orden

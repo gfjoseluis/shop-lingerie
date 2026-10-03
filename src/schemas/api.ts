@@ -11,6 +11,9 @@ export const productQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(48).default(12),
   orden: z.enum(["newest", "price_asc", "price_desc"]).default("newest"),
   soloDisponible: z.coerce.boolean().optional(),
+  copa: z.string().max(30).optional(),
+  corte: z.string().max(30).optional(),
+  tela: z.string().max(30).optional(),
 });
 
 export const orderItemSchema = z.object({
@@ -29,3 +32,47 @@ export const createOrderSchema = z.object({
 });
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema>;
+
+export const orderStatusSchema = z.enum(["pending", "confirmed", "delivered", "cancelled"]);
+export type OrderStatusInput = z.infer<typeof orderStatusSchema>;
+
+const slugSchema = z
+  .string()
+  .min(2)
+  .max(80)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug inválido: solo minúsculas, números y guiones");
+
+export const variantInputSchema = z.object({
+  size: z.string().min(1).max(10),
+  color: z.string().min(1).max(30),
+  sku: z.string().min(2).max(60),
+  stock: z.number().int().min(0).max(100000),
+  priceOverride: z.number().min(0).max(1000000).nullable().optional(),
+});
+
+export const productImageInputSchema = z.object({
+  url: z.string().url().max(500),
+  alt: z.string().max(120).optional().or(z.literal("")),
+});
+
+export const productInputSchema = z.object({
+  name: z.string().min(2).max(120),
+  slug: slugSchema,
+  description: z.string().min(4).max(2000),
+  basePrice: z.number().min(0).max(1000000),
+  salePrice: z.number().min(0).max(1000000).nullable().optional(),
+  categoryId: z.string().uuid("Categoría inválida"),
+  isActive: z.boolean().default(true),
+  isFeatured: z.boolean().default(false),
+  images: z.array(productImageInputSchema).max(8).default([]),
+  variants: z.array(variantInputSchema).min(1).max(60),
+  cupType: z.string().max(30).nullable().optional(),
+  braStyle: z.string().max(30).nullable().optional(),
+  hooks: z.number().int().min(1).max(8).nullable().optional(),
+  cutType: z.string().max(30).nullable().optional(),
+  material: z.string().max(30).nullable().optional(),
+  adhesiveKind: z.string().max(30).nullable().optional(),
+  presentation: z.string().max(60).nullable().optional(),
+});
+
+export type ProductInput = z.infer<typeof productInputSchema>;

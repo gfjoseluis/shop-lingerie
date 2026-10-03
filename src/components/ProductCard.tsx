@@ -12,7 +12,7 @@ export function ProductCard({ p, large = false }: { p: Product; large?: boolean 
         <img
           src={p.images[0]?.url}
           alt={p.images[0]?.alt ?? p.name}
-          className={`w-full object-cover transition duration-500 group-hover:scale-[1.03] ${large ? "aspect-[3/4]" : "aspect-[4/5]"}`}
+          className={`w-full object-cover transition duration-500 group-hover:scale-[1.03] ${large ? "aspect-3/4" : "aspect-4/5"}`}
           loading="lazy"
         />
       </div>

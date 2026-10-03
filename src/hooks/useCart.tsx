@@ -25,19 +25,33 @@ interface CartCtx {
 const Ctx = createContext<CartCtx | null>(null);
 const KEY = "sc-lenceria-cart-v1";
 
+function readStoredCart(): CartLine[] {
+  try {
+    const raw = window.localStorage.getItem(KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as CartLine[]) : [];
+  } catch {
+    return [];
+  }
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
+  // SSR y primer render hidratan con [] para coincidir con el servidor.
   const [lines, setLines] = useState<CartLine[]>([]);
 
+  // Excepción legítima a la regla: localStorage solo existe en el cliente,
+  // no puede leerse durante el render SSR. Un render extra en montaje es el
+  // costo correcto para evitar hydration mismatch (ver React docs: external store).
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setLines(JSON.parse(raw));
-    } catch {}
+    const stored = readStoredCart();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hidrata estado persistido solo-cliente tras el montaje
+    if (stored.length > 0) setLines(stored);
   }, []);
 
   useEffect(() => {
     try {
-      localStorage.setItem(KEY, JSON.stringify(lines));
+      window.localStorage.setItem(KEY, JSON.stringify(lines));
     } catch {}
   }, [lines]);
 

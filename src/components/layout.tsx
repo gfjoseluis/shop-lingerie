@@ -56,13 +56,13 @@ export function Footer() {
         </div>
         <div className="text-sm">
           <p className="text-ivoire/50">Entrega</p>
-          <p className="mt-2 leading-6">Santa Cruz de la Sierra<br />Costo de envío a coordinar<br />Pago contraentrega en Bs</p>
+          <p className="mt-2 leading-6">Santa Cruz de la Sierra<br />Costo de envío a coordinar<br />Pago contraentrega</p>
         </div>
         <div className="text-sm">
           <p className="text-ivoire/50">Tienda</p>
           <div className="mt-2 flex flex-col gap-1">
             <Link href="/catalogo" className="w-fit underline underline-offset-4">Ver todo</Link>
-            <Link href="/api-docs" className="w-fit underline underline-offset-4">API v1 para app móvil</Link>
+            {/* <Link href="/api-docs" className="w-fit underline underline-offset-4">API v1 para app móvil</Link> */}
           </div>
         </div>
       </div>
