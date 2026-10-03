@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Turnstile } from "react-turnstile";
 import { createClient } from "@/lib/supabase/client";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -9,14 +12,23 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (TURNSTILE_SITE_KEY && !captchaToken) {
+      setError("Espera a que termine la verificación anti-bots e intenta de nuevo.");
+      return;
+    }
     setLoading(true);
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+        options: TURNSTILE_SITE_KEY && captchaToken ? { captchaToken } : undefined,
+      });
       if (error) throw error;
       router.push("/admin");
       router.refresh();
@@ -49,6 +61,14 @@ export default function LoginPage() {
           className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue"
         />
         {error ? <p className="text-sm text-figue">{error}</p> : null}
+        {TURNSTILE_SITE_KEY ? (
+          <Turnstile
+            sitekey={TURNSTILE_SITE_KEY}
+            onVerify={(token) => setCaptchaToken(token)}
+            onExpire={() => setCaptchaToken("")}
+            onError={() => setCaptchaToken("")}
+          />
+        ) : null}
         <button disabled={loading} className="w-full bg-figue py-3 text-white disabled:opacity-50">
           {loading ? "Entrando..." : "Entrar"}
         </button>

@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Turnstile } from "react-turnstile";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice } from "@/lib/format";
 import { buildWhatsAppLink, formatOrderForWhatsApp } from "@/lib/whatsapp";
 
 const PHONE_PREFIX = "591";
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 function normalizePhone(raw: string): string | null {
   const digits = raw.replace(/\D/g, "");
@@ -21,6 +23,7 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({ customerName: "", customerPhone: "", neighborhood: "", address: "", reference: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,12 +33,16 @@ export default function CheckoutPage() {
       setError("Revisa tu número: escribe los 8 dígitos de tu celular (ej. 70012345).");
       return;
     }
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError("Espera un momento a que termine la verificación anti-bots e intenta de nuevo.");
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/v1/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, customerPhone: phone, items: lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity })) }),
+        body: JSON.stringify({ ...form, customerPhone: phone, turnstileToken, items: lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity })) }),
       });
       const order = await res.json();
       if (!res.ok) throw new Error(order.error?.message ?? order.error ?? "Error al crear pedido");
@@ -101,6 +108,14 @@ export default function CheckoutPage() {
           className="w-full border border-nuit/20 px-3 py-2.5 text-sm outline-none focus:border-figue"
         />
         {error ? <p className="text-sm text-figue">{error}</p> : null}
+        {TURNSTILE_SITE_KEY ? (
+          <Turnstile
+            sitekey={TURNSTILE_SITE_KEY}
+            onVerify={(token) => setTurnstileToken(token)}
+            onExpire={() => setTurnstileToken("")}
+            onError={() => setTurnstileToken("")}
+          />
+        ) : null}
         <button disabled={loading} className="w-full bg-figue py-3 text-white disabled:opacity-50">
           {loading ? "Creando..." : "Confirmar y enviar a WhatsApp"}
         </button>

@@ -45,9 +45,10 @@ export const openApiSpec = {
             "application/json": {
               example: {
                 customerName: "María",
-                customerPhone: "70012345",
+                customerPhone: "59170012345",
                 neighborhood: "Equipetrol",
                 address: "Calle 5 #123",
+                turnstileToken: "token-turnstile-del-frontend",
                 items: [{ variantId: "p1-v2", quantity: 1 }],
               },
             },

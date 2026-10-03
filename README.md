@@ -69,6 +69,20 @@ Arquitectura limpia: `app/api` (controllers delgados) → `services`
 (reglas) → `repositories` (interfaces + Mock/Supabase, DIP) → `zod`.
 Checkout valida el celular: prefijo `+591` fijo, 8 dígitos (6/7...).
 
+## Anti-bots checkout (Cloudflare Turnstile)
+
+El checkout lleva widget invisible y `POST /api/v1/orders` verifica el
+token en el servidor **antes** de crear el pedido y descontar stock
+(`src/lib/turnstile.ts:1`). Sin secret configurado se omite (dev).
+
+1. Entra a dash.cloudflare.com (cuenta gratis) → Turnstile → Add widget.
+2. Nombre `lenceria-checkout`, modo **Managed** (invisible si no es sospechoso),
+   dominios: `localhost` para probar + tu dominio Vercel.
+3. Copia **Site key** → `NEXT_PUBLIC_TURNSTILE_SITE_KEY` y **Secret key** →
+   `TURNSTILE_SECRET_KEY` (en `.env.local` y en Vercel).
+4. Para probar en local sin cuenta usa las claves de prueba del `.env.example`
+   (siempre pasan).
+
 ## Diseño
 
 Sistema editorial propio (skill frontend-design): tipografías Fraunces
