@@ -12,7 +12,7 @@ export function Header({ storeName }: { storeName: string }) {
         <Link href="/" className="font-display text-[1.4rem] leading-none">
           {storeName}
           <span className="mt-1 block font-body text-[0.7rem] font-light tracking-wide text-nuit/60">
-            Santa Cruz de la Sierra
+            Catálogo privado
           </span>
         </Link>
         <form action="/catalogo" className="hidden flex-1 items-center gap-2 sm:flex">

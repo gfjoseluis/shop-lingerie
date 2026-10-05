@@ -74,11 +74,22 @@ export async function uploadImageAction(formData: FormData): Promise<Result> {
   if (!["image/jpeg", "image/png", "image/webp"].includes(file.type))
     return { ok: false, error: "Solo JPG, PNG o WebP" };
   if (file.size > 5 * 1024 * 1024) return { ok: false, error: "Máximo 5MB por foto" };
-  const ext = file.type.split("/")[1] === "jpeg" ? "jpg" : file.type.split("/")[1];
-  const path = `uploads/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  // Optimiza antes de guardar: 1200px lado largo + WebP (típico: 3-5MB celular → 200-400KB)
+  let buffer: Buffer;
+  try {
+    const sharp = (await import("sharp")).default;
+    buffer = await sharp(Buffer.from(await file.arrayBuffer()))
+      .rotate()
+      .resize({ width: 1200, height: 1600, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 75 })
+      .toBuffer();
+  } catch {
+    return { ok: false, error: "Archivo de imagen inválido" };
+  }
+  const path = `uploads/${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
   const db = getServiceClient();
-  const { error } = await db.storage.from("product-images").upload(path, file, {
-    contentType: file.type,
+  const { error } = await db.storage.from("product-images").upload(path, buffer, {
+    contentType: "image/webp",
     upsert: false,
   });
   if (error) return { ok: false, error: `Subida falló: ${error.message}` };

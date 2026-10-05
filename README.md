@@ -54,7 +54,8 @@ ADMIN_EMAIL=... ADMIN_PASSWORD=... node --env-file=.env.local scripts/create-adm
 - **Panel**: productos, pedidos pendientes, stock bajo (≤3), últimos pedidos.
 - **Productos**: nuevo/editar (slug y SKU auto, todo etiquetado), precio/oferta,
   categoría, material, copa/corte/broches según tipo, variantes con tallas
-  rápidas, fotos por subida (JPG/PNG/WebP ≤5MB) o URL, ocultar/publicar.
+  rápidas, fotos por subida (JPG/PNG/WebP ≤5MB, se guardan como WebP 1200px)
+  o URL, ocultar/publicar. Todo se sirve responsive con `next/image`.
   Con pedidos existentes el stock se edita por variante.
 - **Categorías**: slug auto desde el nombre, renombrar y borrar (bloquea con productos).
 - **Configuración**: nombre tienda, WhatsApp y redes sin redeploy.
@@ -68,6 +69,8 @@ ADMIN_EMAIL=... ADMIN_PASSWORD=... node --env-file=.env.local scripts/create-adm
 - `GET /api/v1/products/[slug]`
 - `POST /api/v1/orders` `{customerName, customerPhone, neighborhood, address, reference?, items:[{variantId, quantity}]}` (descuenta stock atómico)
 - Docs interactivas: `/api-docs` (Scalar, spec en `/api/openapi.json`)
+- Sitemap automático en `/sitemap.xml` (usa el dominio del request) + `/robots.txt`
+- Analytics de Vercel activo (se ve en el dashboard al desplegar)
 
 Arquitectura limpia: `app/api` (controllers delgados) → `services`
 (reglas) → `repositories` (interfaces + Mock/Supabase, DIP) → `zod`.

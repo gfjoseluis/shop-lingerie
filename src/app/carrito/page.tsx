@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice } from "@/lib/format";
+import { ShopImage } from "@/components/ShopImage";
 
 export default function CarritoPage() {
   const { lines, subtotal, setQty, remove } = useCart();
@@ -18,8 +19,7 @@ export default function CarritoPage() {
       <div className="mt-4 space-y-3">
         {lines.map((l) => (
           <div key={l.variantId} className="flex gap-3 rounded-2xl border bg-white p-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={l.imageUrl} alt={l.productName} className="h-20 w-16 rounded-lg object-cover" />
+            <ShopImage src={l.imageUrl} alt={l.productName} sizes="80px" className="h-20 w-16 shrink-0 rounded-lg" />
             <div className="flex-1 text-sm">
               <p className="font-medium">{l.productName}</p>
               <p className="text-zinc-500">{l.size} / {l.color} · {formatPrice(l.unitPrice)}</p>

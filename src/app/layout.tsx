@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Fraunces, Jost } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/hooks/useCart";
 import { Footer, Header } from "@/components/layout";
 import { SocialFloat } from "@/components/SocialFloat";
 import { getSiteSettings } from "@/lib/settings";
 import { getProductRepository } from "@/repositories/factory";
 
-const display = Fraunces({ subsets: ["latin"], variable: "--font-display", style: ["normal", "italic"], weight: ["400", "500", "600"] });
+const display = Cormorant_Garamond({ subsets: ["latin"], variable: "--font-display", style: ["normal", "italic"], weight: ["300", "400", "500"] });
 const body = Jost({ subsets: ["latin"], variable: "--font-body", weight: ["300", "400", "500", "600"] });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${settings.storeName} | Catálogo Santa Cruz`,
     description: "Catálogo virtual de lencería en Santa Cruz de la Sierra. Pedidos por WhatsApp, pago contraentrega.",
+    icons: { icon: "/ico.webp", apple: "/ico.webp" },
   };
 }
 
@@ -44,6 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
           <SocialFloat settings={settings} />
         </CartProvider>
+        <Analytics />
       </body>
     </html>
   );

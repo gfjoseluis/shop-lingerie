@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ProductService } from "@/services/shop.service";
+import { ShopImage } from "@/components/ShopImage";
 import { ProductCard } from "@/components/ProductCard";
 
 export default async function Home() {
@@ -8,14 +9,14 @@ export default async function Home() {
   const [hero, ...rest] = featured.data;
   return (
     <main className="mx-auto max-w-6xl px-4">
-      <section className="grid gap-10 pt-10 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <section className="hero-enter grid gap-10 pt-10 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
         <div>
           <p className="text-sm font-light text-nuit/55">Catálogo · Pedidos por WhatsApp · Contraentrega</p>
           <h1 className="font-display mt-4 max-w-[14ch] text-[2.8rem] leading-[0.98] sm:text-[4.4rem]">
             Íntima, suave y a tu medida.
           </h1>
           <p className="mt-5 max-w-[46ch] text-[1rem] font-light leading-7 text-nuit/75">
-            Eliges en calma, preguntas tu talla por WhatsApp y recibes en Santa Cruz con Yango o InDrive. Sin pagos en línea, sin apuros.
+            Eliges en calma, preguntas tu talla por WhatsApp y recibes en la ciudad con Yango o InDrive. Sin pagos en línea, sin apuros.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/catalogo" className="bg-nuit px-7 py-3 text-[0.95rem] text-ivoire">
@@ -26,19 +27,24 @@ export default async function Home() {
           <div className="mt-8 flex gap-8 border-t border-figue/15 pt-5 text-sm">
             <div><p className="font-display text-2xl">{featured.total}+</p><p className="font-light text-nuit/60">piezas en catálogo</p></div>
             <div><p className="font-display text-2xl">Bs</p><p className="font-light text-nuit/60">pago al recibir</p></div>
-            <div><p className="font-display text-2xl">SCZ</p><p className="font-light text-nuit/60">entrega el mismo día</p></div>
+            <div><p className="font-display text-2xl">Hoy</p><p className="font-light text-nuit/60">entrega el mismo día</p></div>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="arch overflow-hidden border border-figue/15">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={hero?.images[0]?.url ?? ""} alt={hero?.name ?? "Pieza destacada"} className="aspect-3/4 w-full object-cover" />
-          </div>
+          <ShopImage
+            src={hero?.images[0]?.url ?? ""}
+            alt={hero?.name ?? "Pieza destacada"}
+            priority
+            sizes="(max-width: 1024px) 50vw, 30vw"
+            className="arch aspect-3/4 overflow-hidden border border-figue/15"
+          />
           <div className="flex flex-col gap-4 pt-10">
-            <div className="overflow-hidden border border-figue/15">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={rest[0]?.images[1]?.url ?? rest[0]?.images[0]?.url ?? ""} alt="" className="aspect-square w-full object-cover" />
-            </div>
+            <ShopImage
+              src={rest[0]?.images[1]?.url ?? rest[0]?.images[0]?.url ?? ""}
+              alt=""
+              sizes="(max-width: 1024px) 50vw, 25vw"
+              className="aspect-square overflow-hidden border border-figue/15"
+            />
             <p className="bg-seda-soft p-4 font-display text-[1.05rem] italic leading-snug">
               “Escríbeme tu medida y te digo qué talla te queda.”
             </p>
