@@ -140,7 +140,7 @@ export function CheckoutForm({ settings }: { settings: SiteSettings }) {
             onError={() => setTurnstileToken("")}
           />
         ) : null}
-        <button disabled={loading} className="w-full bg-nuit py-3 text-ivoire disabled:opacity-50">
+        <button disabled={loading} className="w-full rounded-full bg-figue py-3 font-semibold text-nuit disabled:opacity-50">
           {loading ? "Creando..." : "Confirmar y enviar a WhatsApp"}
         </button>
       </form>

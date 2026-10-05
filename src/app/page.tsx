@@ -19,7 +19,7 @@ export default async function Home() {
             Eliges en calma, preguntas tu talla por WhatsApp y recibes en la ciudad con Yango o InDrive. Sin pagos en línea, sin apuros.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Link href="/catalogo" className="bg-nuit px-7 py-3 text-[0.95rem] text-ivoire">
+            <Link href="/catalogo" className="rounded-full bg-figue px-7 py-3 text-[0.95rem] font-semibold text-nuit transition hover:bg-figue-deep hover:text-ivoire">
               Explorar la colección
             </Link>
             <span className="text-sm font-light text-nuit/60">Guía de tallas incluida en cada pieza</span>
@@ -30,7 +30,10 @@ export default async function Home() {
             <div><p className="font-display text-2xl">Hoy</p><p className="font-light text-nuit/60">entrega el mismo día</p></div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="relative grid grid-cols-2 gap-4">
+          <span className="absolute -top-3 -left-2 z-10 flex h-20 w-20 rotate-[-10deg] items-center justify-center rounded-full bg-figue p-2 text-center text-xs leading-tight font-bold text-nuit shadow-lg">
+            ¡Paga al recibir!
+          </span>
           <ShopImage
             src={hero?.images[0]?.url ?? ""}
             alt={hero?.name ?? "Pieza destacada"}

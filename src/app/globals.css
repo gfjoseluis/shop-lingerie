@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-nuit: #2c222b;
-  --color-ivoire: #faf6ee;
-  --color-figue: #6e4653;
-  --color-figue-deep: #4a2e38;
-  --color-seda: #e9d8c8;
-  --color-seda-soft: #f5ebe1;
-  --color-laiton: #9c7c33;
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Jost", system-ui, sans-serif;
+  --color-nuit: #52284a;
+  --color-ivoire: #fff6ef;
+  --color-figue: #f06292;
+  --color-figue-deep: #d14e7e;
+  --color-seda: #f5c9dc;
+  --color-seda-soft: #fdeef4;
+  --color-laiton: #b97f00;
+  --font-display: "Baloo 2", "Quicksand", system-ui, sans-serif;
+  --font-body: "Quicksand", system-ui, sans-serif;
 }
 
 :root {
@@ -31,8 +31,8 @@ body {
 
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
-  line-height: 1.02;
+  letter-spacing: 0;
+  line-height: 1.05;
 }
 
 /* Arch signature: mirror/boudoir shape, single memorable element */
@@ -58,7 +58,7 @@ body {
 
 ::selection {
   background: var(--color-figue);
-  color: white;
+  color: var(--color-nuit);
 }
 
 a:focus-visible,

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Baloo_2, Quicksand } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/hooks/useCart";
@@ -8,8 +8,8 @@ import { SocialFloat } from "@/components/SocialFloat";
 import { getSiteSettings } from "@/lib/settings";
 import { getProductRepository } from "@/repositories/factory";
 
-const display = Cormorant_Garamond({ subsets: ["latin"], variable: "--font-display", style: ["normal", "italic"], weight: ["300", "400", "500"] });
-const body = Jost({ subsets: ["latin"], variable: "--font-body", weight: ["300", "400", "500", "600"] });
+const display = Baloo_2({ subsets: ["latin"], variable: "--font-display", weight: ["500", "600", "700"] });
+const body = Quicksand({ subsets: ["latin"], variable: "--font-body", weight: ["300", "400", "500", "600", "700"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();

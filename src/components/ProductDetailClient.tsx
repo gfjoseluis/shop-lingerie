@@ -146,7 +146,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 type="button"
                 onClick={() => setColor(c)}
                 aria-pressed={c === color}
-                className={`touch-manipulation min-h-[44px] cursor-pointer border px-4 py-2 text-sm select-none ${c === color ? "border-nuit bg-nuit text-ivoire" : "border-nuit/20"}`}
+                className={`touch-manipulation min-h-[44px] cursor-pointer rounded-full border px-4 py-2 text-sm font-medium select-none ${c === color ? "border-figue bg-figue text-nuit" : "border-nuit/20"}`}
               >
                 {c}
               </button>
@@ -162,7 +162,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 type="button"
                 onClick={() => setSize(s)}
                 aria-pressed={s === size}
-                className={`touch-manipulation min-h-[44px] cursor-pointer border px-4 py-2 text-sm select-none ${s === size ? "border-nuit bg-nuit text-ivoire" : "border-nuit/20"}`}
+                className={`touch-manipulation min-h-[44px] cursor-pointer rounded-full border px-4 py-2 text-sm font-medium select-none ${s === size ? "border-figue bg-figue text-nuit" : "border-nuit/20"}`}
               >
                 {s}
               </button>
@@ -202,7 +202,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               });
               setAdded(true);
             }}
-            className="flex-1 touch-manipulation bg-nuit py-3.5 text-ivoire disabled:opacity-40"
+            className="flex-1 touch-manipulation rounded-full bg-figue py-3.5 font-semibold text-nuit disabled:opacity-40"
           >
             Guardar en la bolsa
           </button>

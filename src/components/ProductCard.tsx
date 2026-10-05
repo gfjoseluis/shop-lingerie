@@ -8,8 +8,14 @@ export function ProductCard({ p, large = false }: { p: Product; large?: boolean 
   const soldOut = p.variants.every((v) => v.stock === 0);
   const available = p.variants.reduce((a, v) => a + v.stock, 0);
   const lowStock = !soldOut && available <= 3;
+  const offPct = p.salePrice && p.salePrice < p.basePrice ? Math.round((1 - p.salePrice / p.basePrice) * 100) : 0;
   return (
-    <Link href={`/producto/${p.slug}`} className="group block">
+    <Link href={`/producto/${p.slug}`} className="group relative block">
+      {offPct > 0 ? (
+        <span className="absolute -top-2 -right-2 z-10 flex h-14 w-14 rotate-[8deg] items-center justify-center rounded-full bg-laiton text-sm font-bold text-nuit shadow">
+          -{offPct}%
+        </span>
+      ) : null}
       <ShopImage
         src={p.images[0]?.url ?? ""}
         alt={p.images[0]?.alt ?? p.name}

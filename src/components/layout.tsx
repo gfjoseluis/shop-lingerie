@@ -23,7 +23,7 @@ export function Header({ storeName }: { storeName: string }) {
             placeholder="Encaje negro en M, body seda…"
             className="w-full border-b border-nuit/25 bg-transparent py-2 text-[0.95rem] outline-none placeholder:text-nuit/40 focus:border-figue"
           />
-          <button className="border border-nuit px-4 py-2 text-sm text-nuit transition hover:bg-nuit hover:text-ivoire">
+          <button className="rounded-full border border-nuit px-4 py-2 text-sm text-nuit transition hover:bg-figue hover:border-figue">
             Buscar
           </button>
         </form>
@@ -31,7 +31,7 @@ export function Header({ storeName }: { storeName: string }) {
           <Link href="/catalogo" className="underline decoration-figue/40 underline-offset-4 hover:decoration-figue">
             Catálogo
           </Link>
-          <Link href="/carrito" className="bg-nuit px-4 py-2 text-ivoire">
+          <Link href="/carrito" className="rounded-full bg-figue px-4 py-2 font-medium text-nuit">
             Bolsa · {count}
           </Link>
         </nav>

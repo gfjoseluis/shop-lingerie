@@ -108,7 +108,7 @@ export function SocialFloat({ settings }: { settings: SiteSettings }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label={open ? "Cerrar contacto" : "Abrir contacto"}
-        className="flex h-14 w-14 touch-manipulation items-center justify-center rounded-full bg-figue text-xl text-white shadow-lg"
+        className="flex h-14 w-14 touch-manipulation items-center justify-center rounded-full bg-figue text-xl font-bold text-nuit shadow-lg"
       >
         <span aria-hidden className={`transition-transform duration-200 ${open ? "rotate-45" : ""}`}>
           +
